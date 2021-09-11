@@ -1,8 +1,10 @@
-##Problem Statement 1: House Price Prediction
-##Group Name: Group 1 Hackathon 2
+##Problem Statement 1
+- House Price Prediction
+##Group Name
+- Group 1 Hackathon 2
 ##Names:
-Parsha Sai Krishna
-Kanukollu Gnana Venkata Ram Mohan
+- Parsha Sai Krishna
+- Kanukollu Gnana Venkata Ram Mohan
 
 ## File components
 - main.py : This is the main python file for the api application.
