@@ -1,37 +1,75 @@
-Problem Statement 1: CredScore Application
-Group Name: Week 6 Hackathon : Group 15
+Problem Statement 1: House Price Prediction
+Group Name: Group 1 Hackathon 2
+Names:
+Parsha Sai Krishna
+Kanukollu Gnana Venkata Ram Mohan
 
 ## File components
-- static : This is a folder to store all static assets like javascripts, css, images
-    - main.css : This is a css file to style the web application
-    - explain.svg :  decision tree visualization saved in svg format
-- templates : This is a folder to store the html templates to render UI
-    - layout.html : The common layout page for all web pages in the application
-    - predict.html : This is the page to hold the Predictor form
-    - result.html : This is the page to show the results
 - main.py : This is the main python file for the api application.
 - ml_utils.py : This is the utility file to perform the actual ml processing like data loading, model building, training, predicting
 - test_app.py : This is to test the api methods
-- ci_cd.yaml : This is configuration file to setup workflow for ci cd
-- mainweb.py : This is the main python file for web application.
-- credit_score_form.py: This is the file to have the credit score form which is loaded into predict html
+- housePricePredictorRequestStream.py : This is the producer stream which will read data from test.csv and stream one by one row through kafka.
+- predictor.py : Kafka stream consumer. Consumes the stream, uses API to predict and store the complete data set to hive.
+- createtable.txt : sql command to create 'HousePricePredictor' in Hive
+- see_contents.py : can be used to see the contents in the 'HousePricePredictor' table in hive while the service is running
 - requirements.txt : This lists all the dependencies
-- screenshots : This sfolder has the screenshots.
-- Tester.ipynb : jupyter notebook file used to test, before adding them to actual project
-- credit_data_actual_values.py : Helper file to substitue actual values
+- snaps : This folder has the screenshots of all the results.
+- housePricePredictor.ipynb : jupyter notebook file used to test, before adding them to actual project
+- EnvironmentSetupHelper.txt : Has the download links, commands for environment setup.
+- data_description.txt : Description of the data used
+- train.csv : train data
+- test.csv : test data
 - ReadMe.md: This is the read me file.
 
-
 ## Running Instructions
+- Please ensure Environment setup (mentioned below) is complete before proceeding
 - Install dependencies using `pip3 install -r requirements.txt`
-- Run api application using `python main.py`.
-- Run web application using `python mainweb.py`
-- We can do predict using api or launching web app UI. Screenshots available will help.
-- To run tests use `pytest`
+- Terminal 1: move to kafka directory, start zookeeper server
+	$ cd kafka/
+	~/kafka$ bin/zookeeper-server-start.sh config/zookeeper.properties
+- Terminal 2: move to kafka directory, start kafka server
+	~$ cd kafka/
+	~/kafka$ bin/kafka-server-start.sh config/server.properties
+- Terminal 3: Create a topic 'HousePricePredictorRequests'
+	~/kafka$ bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+	~/kafka$ bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic HousePricePredictorRequests
+- Terminal 4: Start Hive service
+	~$ hive --service metastore
+- Terminal 5: Check for records in Hive
+	~$ hive
+	...
+	hive> select count(*) from default.HousePricePredictor;
+- Terminal 6: Stream Procuder
+	~$ python3 housePricePredictorRequestStream.py
+- Terminal 7: Run Predictor API
+	~$ python3 main.py
+- Terminal 8: Stream Consumer, predict and store to hive
+	~$ spark-submit --jars spark-streaming-kafka-0-8-assembly_2.11-2.4.8.jar predictor.py
+- Once the processing starts please use Terminal 5 for checking the data in hive
 
-## CI/CD
-- `build` (test) for all the pull requests
-- `build` (test) and `upload_zip` for all pushes
+## Environment Setup
 
+- VM Setup - Ubuntu 18.04 Image.
+- Install Kafka, unzip the contents and rename the folder to 'kafka'
+- Install Java.
+- Install Kafka-Python
+- Install Hadoop, unzip the contents and rename the folder to 'hadoop'
+- Update Hadoop environment variables.
+- Setup Hadoop
+- Setup SSH
+- Start the Hadoop cluster
+- Install Hive, unzip the contents and rename the folder 'hive'
+- Update Hive environment variables
+- Setup Permissions to HDFS
+- Setup Hive
+- create a database schema for Hive
+- Start the Hive Metastore server.
+- Enter Hive shell and Make the database for storing our House Price Prediction data	
+- Install Spark, unzip the contents and rename the folder to 'spark'
+- Install pyspark
+- Update spark, pyspark environment variables.
+- Download the JAR file for pyspark to connect to kafka.
 
-Note: This is checked into github : https://github.com/skp1919/week6hackathongroup15/tree/master
+For more details on Environment setup, please use EnvironmentSetupHelper.txt
+
+Note: This is checked into github : https://github.com/skp1919/HousePricePredictorHackathon/tree/master
