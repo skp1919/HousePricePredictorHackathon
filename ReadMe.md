@@ -7,7 +7,6 @@ Kanukollu Gnana Venkata Ram Mohan
 ## File components
 - main.py : This is the main python file for the api application.
 - ml_utils.py : This is the utility file to perform the actual ml processing like data loading, model building, training, predicting
-- test_app.py : This is to test the api methods
 - housePricePredictorRequestStream.py : This is the producer stream which will read data from test.csv and stream one by one row through kafka.
 - predictor.py : Kafka stream consumer. Consumes the stream, uses API to predict and store the complete data set to hive.
 - createtable.txt : sql command to create 'HousePricePredictor' in Hive
