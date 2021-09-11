@@ -1,4 +1,4 @@
-## Problem Statement 1
+## Problem Statement
 - House Price Prediction
 
 ## Group Name
@@ -42,7 +42,7 @@
 	~$ hive
 	...
 	hive> select count(*) from default.HousePricePredictor;
-- Terminal 6: Stream Procuder
+- Terminal 6: Stream Producer
 	~$ python3 housePricePredictorRequestStream.py
 - Terminal 7: Run Predictor API
 	~$ python3 main.py
