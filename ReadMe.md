@@ -2,7 +2,7 @@
 - House Price Prediction
 
 ## Group Name
-- Group 1 Hackathon 2
+- Spartans Group 1 Hackathon 2
 
 ## Names:
 - Parsha Sai Krishna
